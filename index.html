@@ -330,6 +330,46 @@
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+
+    /* ── TUTORIAL CARD ── */
+    .tutorial-card {
+      border: 1px solid rgba(0,0,0,0.09);
+      border-radius: 12px;
+      padding: 20px;
+      background: var(--card);
+      display: none;
+    }
+    .tutorial-card.show { display: block; }
+    .tutorial-title {
+      font-size: 0.87rem; font-weight: 700; color: var(--text);
+      margin-bottom: 14px; letter-spacing: -0.2px;
+    }
+    .tutorial-steps { display: flex; flex-direction: column; gap: 10px; }
+    .tutorial-step {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.82rem; color: var(--muted); line-height: 1.5;
+    }
+    .step-num {
+      width: 20px; height: 20px; flex-shrink: 0;
+      background: rgba(0,113,227,0.07); border: 1px solid rgba(0,113,227,0.2);
+      border-radius: 50%; color: var(--accent);
+      font-size: 0.68rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .security-note {
+      font-size: 0.78rem; color: var(--muted);
+      margin-top: 10px; line-height: 1.6;
+    }
+    .section-eyebrow {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent);
+      display: block; margin-bottom: 8px;
+    }
+    .section-sub {
+      font-size: 0.9rem; color: var(--muted);
+      margin-bottom: 20px; line-height: 1.6;
+    }
   </style>
 </head>
 <body>
@@ -351,10 +391,10 @@
   <div class="progress-wrap">
     <div class="progress-meta">
       <span class="progress-name" id="stepName">Votre boutique</span>
-      <span class="progress-count" id="stepCount">1 / 5</span>
+      <span class="progress-count" id="stepCount">1 / 6</span>
     </div>
     <div class="progress-track">
-      <div class="progress-bar" id="progressBar" style="width:20%"></div>
+      <div class="progress-bar" id="progressBar" style="width:16.67%"></div>
     </div>
   </div>
 
@@ -666,6 +706,123 @@
       </div>
       <div class="step-nav">
         <button class="btn-back" onclick="go(5,4)">← Retour</button>
+        <button class="btn-next" onclick="go(5,6)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6 — Accès technique -->
+    <div class="step" id="step-6">
+      <div class="step-header">
+        <span class="step-eyebrow">06 · Accès technique</span>
+        <h2>Connectons votre boîte mail</h2>
+        <p>Votre agent a besoin d'accéder à votre boîte SAV pour lire et répondre aux emails. Vous ne partagez jamais votre vrai mot de passe — on utilise un mot de passe dédié à l'agent.</p>
+      </div>
+      <div class="fields">
+
+        <!-- Provider selector -->
+        <div class="field">
+          <label>Votre fournisseur email <span class="req">*</span></label>
+          <div class="pills" id="g-emailProvider">
+            <span class="pill" data-v="Gmail" onclick="selectProvider(this,'gmail')">Gmail</span>
+            <span class="pill" data-v="Outlook / Microsoft 365" onclick="selectProvider(this,'outlook')">Outlook / Microsoft 365</span>
+            <span class="pill" data-v="OVH" onclick="selectProvider(this,'ovh')">OVH</span>
+            <span class="pill" data-v="Autre" onclick="selectProvider(this,'autre')">Autre</span>
+          </div>
+          <input type="hidden" id="emailProviderVal" value="" />
+          <span class="err-msg" id="e-emailProvider">Sélectionnez votre fournisseur.</span>
+        </div>
+
+        <!-- Tutorial cards (shown on provider select) -->
+        <div class="tutorial-card" id="tuto-gmail">
+          <div class="tutorial-title">Créer un mot de passe pour l'agent Gmail</div>
+          <div class="tutorial-steps">
+            <div class="tutorial-step"><span class="step-num">1</span>Allez sur myaccount.google.com → Sécurité</div>
+            <div class="tutorial-step"><span class="step-num">2</span>Activez la validation en 2 étapes si ce n'est pas déjà fait</div>
+            <div class="tutorial-step"><span class="step-num">3</span>Dans Sécurité → cherchez "Mots de passe des applications"</div>
+            <div class="tutorial-step"><span class="step-num">4</span>Sélectionnez "Autre (nom personnalisé)" → tapez "Anovia Agent" → Générer</div>
+            <div class="tutorial-step"><span class="step-num">5</span>Copiez le mot de passe à 16 caractères et collez-le ci-dessous</div>
+          </div>
+        </div>
+        <div class="tutorial-card" id="tuto-outlook">
+          <div class="tutorial-title">Créer un mot de passe pour l'agent Outlook</div>
+          <div class="tutorial-steps">
+            <div class="tutorial-step"><span class="step-num">1</span>Allez sur account.microsoft.com → Sécurité</div>
+            <div class="tutorial-step"><span class="step-num">2</span>Cliquez sur "Options de sécurité avancées"</div>
+            <div class="tutorial-step"><span class="step-num">3</span>Dans "Mots de passe d'application" → Créer un mot de passe</div>
+            <div class="tutorial-step"><span class="step-num">4</span>Nommez-le "Anovia Agent" → Suivant</div>
+            <div class="tutorial-step"><span class="step-num">5</span>Copiez le mot de passe généré et collez-le ci-dessous</div>
+          </div>
+        </div>
+        <div class="tutorial-card" id="tuto-ovh">
+          <div class="tutorial-title">Accès email OVH</div>
+          <div class="tutorial-steps">
+            <div class="tutorial-step"><span class="step-num">1</span>Connectez-vous à votre espace client OVH (ovh.com)</div>
+            <div class="tutorial-step"><span class="step-num">2</span>Allez dans Emails → votre domaine → votre adresse SAV</div>
+            <div class="tutorial-step"><span class="step-num">3</span>Notez l'adresse email complète et votre mot de passe OVH habituel</div>
+            <div class="tutorial-step"><span class="step-num">4</span>Serveur entrant : imap.mail.ovh.net · Serveur sortant : ssl0.ovh.net</div>
+            <div class="tutorial-step"><span class="step-num">5</span>Collez vos identifiants ci-dessous</div>
+          </div>
+        </div>
+        <div class="tutorial-card" id="tuto-autre">
+          <div class="tutorial-title">Accès email — autre fournisseur</div>
+          <div class="tutorial-steps">
+            <div class="tutorial-step"><span class="step-num">1</span>Connectez-vous à l'interface de gestion de votre hébergeur mail</div>
+            <div class="tutorial-step"><span class="step-num">2</span>Repérez les paramètres IMAP/SMTP (souvent dans "Configuration email" ou "Aide")</div>
+            <div class="tutorial-step"><span class="step-num">3</span>Notez : adresse email, mot de passe, serveur IMAP, serveur SMTP</div>
+            <div class="tutorial-step"><span class="step-num">4</span>Renseignez vos identifiants ci-dessous</div>
+          </div>
+        </div>
+
+        <!-- Email credentials -->
+        <div class="row-2">
+          <div class="field">
+            <label>Email SAV <span class="req">*</span></label>
+            <input type="email" id="agentEmail" placeholder="contact@votreboutique.fr" />
+            <span class="err-msg" id="e-agentEmail">Email requis.</span>
+          </div>
+          <div class="field">
+            <label>Mot de passe / Mot de passe applicatif <span class="req">*</span></label>
+            <input type="password" id="agentPassword" placeholder="Collez le mot de passe ici" />
+            <span class="err-msg" id="e-agentPassword">Champ requis.</span>
+          </div>
+        </div>
+        <p class="security-note">🔒 Ces informations sont transmises de manière sécurisée et utilisées uniquement pour connecter votre agent. Elles ne sont jamais partagées.</p>
+
+        <div class="divider"></div>
+
+        <!-- Part B — Shopify -->
+        <span class="section-eyebrow">Accès Shopify</span>
+        <p class="section-sub">Pour que votre agent puisse consulter le statut des commandes et le stock en temps réel. Accès lecture seule — l'agent ne peut rien modifier dans votre boutique.</p>
+
+        <div class="tutorial-card show" id="tuto-shopify">
+          <div class="tutorial-title">Créer un accès API pour l'agent (5 min)</div>
+          <div class="tutorial-steps">
+            <div class="tutorial-step"><span class="step-num">1</span>Dans votre admin Shopify → Paramètres (en bas à gauche) → Applications et canaux de vente</div>
+            <div class="tutorial-step"><span class="step-num">2</span>Cliquez sur "Développer des applications" → "Créer une application" → nommez-la "Anovia Agent"</div>
+            <div class="tutorial-step"><span class="step-num">3</span>Cliquez sur "Configurer les droits API Admin" → activez en lecture seule : Commandes, Produits, Stocks, Clients, Expéditions</div>
+            <div class="tutorial-step"><span class="step-num">4</span>Cliquez sur "Installer l'application" → confirmez</div>
+            <div class="tutorial-step"><span class="step-num">5</span>Copiez le "Token d'accès Admin API" qui s'affiche (commence par shpat_...)</div>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="field">
+            <label>URL de votre boutique Shopify <span class="req">*</span></label>
+            <input type="url" id="shopifyUrl" placeholder="https://votre-boutique.myshopify.com" />
+            <span class="err-msg" id="e-shopifyUrl">URL requise.</span>
+          </div>
+          <div class="field">
+            <label>Token d'accès API <span class="req">*</span></label>
+            <input type="password" id="shopifyToken" placeholder="shpat_xxxxxxxxxxxx" />
+            <span class="err-msg" id="e-shopifyToken">Token requis.</span>
+          </div>
+        </div>
+        <p class="security-note">🔒 Accès lecture seule — l'agent peut consulter les commandes et le stock mais ne peut rien modifier dans votre boutique.</p>
+        <p style="font-size:0.82rem; color:var(--muted); margin-top:16px; line-height:1.6;">Vous utilisez WooCommerce, PrestaShop ou une autre plateforme ? Indiquez-le dans les notes — on s'adapte.</p>
+
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="go(6,5)">← Retour</button>
         <button class="btn-submit" id="btnSubmit" onclick="submit()">Envoyer le questionnaire ✓</button>
       </div>
     </div>
@@ -687,8 +844,8 @@
 
   <script>
     const FORMSPREE = "https://formspree.io/f/xzdoewoj";
-    const TOTAL = 5;
-    const NAMES = ['Votre boutique','SAV actuel','Politiques & contenu','Ton & personnalité','Contact & accès'];
+    const TOTAL = 6;
+    const NAMES = ['Votre boutique','SAV actuel','Politiques & contenu','Ton & personnalité','Contact & accès','Accès technique'];
 
     /* ── NAVIGATION ── */
     function go(from, to) {
@@ -737,6 +894,16 @@
         if (!em||!em.includes('@')){ err('contactEmail',true); ok=false; } else err('contactEmail',false);
         if (!v('savEmail'))     { err('savEmail',true);     ok=false; } else err('savEmail',false);
       }
+      if (step===6) {
+        if (!document.getElementById('emailProviderVal').value) {
+          document.getElementById('e-emailProvider').classList.add('show'); ok=false;
+        } else document.getElementById('e-emailProvider').classList.remove('show');
+        const ae=document.getElementById('agentEmail').value.trim();
+        if (!ae||!ae.includes('@')) { err('agentEmail',true);  ok=false; } else err('agentEmail',false);
+        if (!v('agentPassword'))    { err('agentPassword',true); ok=false; } else err('agentPassword',false);
+        if (!v('shopifyUrl'))       { err('shopifyUrl',true);   ok=false; } else err('shopifyUrl',false);
+        if (!v('shopifyToken'))     { err('shopifyToken',true); ok=false; } else err('shopifyToken',false);
+      }
       if (!ok) document.querySelector('#step-'+step+' .err-msg.show, #step-'+step+' .is-error')?.scrollIntoView({behavior:'smooth',block:'center'});
       return ok;
     }
@@ -764,9 +931,20 @@
     }
     const getPills = id => [...document.querySelectorAll('#'+id+' .pill.on')].map(p=>p.dataset.v).join(', ');
 
+    /* ── PROVIDER TUTORIAL ── */
+    function selectProvider(el, key) {
+      el.closest('.pills').querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+      el.classList.add('on');
+      document.getElementById('emailProviderVal').value = el.dataset.v;
+      document.getElementById('e-emailProvider').classList.remove('show');
+      ['gmail','outlook','ovh','autre'].forEach(k => {
+        document.getElementById('tuto-'+k).classList.toggle('show', k===key);
+      });
+    }
+
     /* ── SUBMIT ── */
     function submit() {
-      if (!validate(5)) return;
+      if (!validate(6)) return;
       const btn = document.getElementById('btnSubmit');
       btn.disabled = true; btn.textContent = 'Envoi en cours…';
 
@@ -799,6 +977,12 @@
         "Fournisseur email":     document.getElementById('mailProvider').value,
         "Disponibilités":        v('availability'),
         "Notes":                 v('finalNotes'),
+        "Accès technique": {
+          "Email SAV (accès agent)":  v('agentEmail'),
+          "Mot de passe email agent": v('agentPassword'),
+          "URL Shopify":              v('shopifyUrl'),
+          "Token API Shopify":        v('shopifyToken'),
+        }
       };
 
       fetch(FORMSPREE, {
